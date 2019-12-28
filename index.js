@@ -17,10 +17,10 @@ const params = {
 };
 
 // Start Handler
-bot.on('start', () => {
+bot.on("start", () => {
   bot.postMessageToChannel(
     channel,
-    '安安我是 applepie，你今天被撩了嗎？ 還沒的話 mention 我一下呀！不然你打 "inspire me" 可以看看業界名言',
+    '安安我是 applepie，你今天被撩了嗎？ 還沒的話趕快輸入 @applepie！不然你打 "inspire me" 可以看看業界名言',
     params
   );
 });
@@ -30,14 +30,17 @@ bot.on("error", err => console.log(err));
 
 // Message Handler
 bot.on("message", data => {
+  console.log(data);
+  if (data.subtype) {
+    // bot reply to itself >> shut down
+    return;
+  };
   if (data.type == "desktop_notification") {
     throwPickUpLine();
     return;
-  }
-  else if (data.type !== "message") {
+  } else if (data.type !== "message") {
     return;
-  }
-  else {
+  } else {
     console.log("Handling message...");
     handleMessage(data.text);
     console.log(data.text);
@@ -46,7 +49,7 @@ bot.on("message", data => {
 
 function throwPickUpLine() {
   bot.postMessageToChannel;
-  let replyData = fs.readFileSync("pickuplines.json");
+  let replyData = fs.readFileSync("content/pickuplines.json");
   let content = JSON.parse(replyData);
 
   // random reply
@@ -59,24 +62,15 @@ function throwPickUpLine() {
   // if there's a question, wait for a user to type something before sending out the reply
   if (question) {
     bot.postMessageToChannel(channel, question, params);
-    setTimeout(replyBack(channel, reply, params), 5000); 
+    if (bot.on("message")) {
+      bot.postMessageToChannel(channel, reply, params);
+    }
     return;
   }
 
   // if it's only one sentence
   bot.postMessageToChannel(channel, reply, params);
 }
-
-
-function replyBack(channel, reply, params) {
-  bot.on("message", data => {
-    if (data.type == "message") {
-      bot.postMessageToChannel(channel, reply, params);
-      return;
-    }
-  });
-}
-
 
 // Respons to Data
 function handleMessage(message) {
@@ -86,15 +80,14 @@ function handleMessage(message) {
     inspireMe();
   } else if (message.includes("applepie")) {
     throwPickUpLine();
-  }
-  else if (message.includes(' help')) {
+  } else if (message.includes("help")) {
     runHelp();
   }
 }
 
 function hailMyEthan() {
   bot.postMessageToChannel;
-  let replyData = fs.readFileSync("content.json");
+  let replyData = fs.readFileSync("content/content.json");
   console.log(replyData);
   let replies = JSON.parse(replyData);
   console.log(replies);
@@ -107,7 +100,6 @@ function hailMyEthan() {
 
 // inspire Me
 function inspireMe() {
-  console.log("Running inspireMe()-----------");
   axios
     .get(
       "https://raw.githubusercontent.com/BolajiAyodeji/inspireNuggets/master/src/quotes.json"
