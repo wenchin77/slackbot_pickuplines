@@ -20,7 +20,7 @@ const params = {
 bot.on("start", () => {
   bot.postMessageToChannel(
     channel,
-    '安安我是 applepie，你今天被撩了嗎？ 還沒的話趕快輸入 @applepie！不然你打 "inspire me" 可以看看業界名言',
+    '安安我是 applepie，你今天被撩了嗎？輸入 @applepie 讓你臉紅心跳！不然打 "inspire me" 可以看看業界名言',
     params
   );
 });
@@ -31,46 +31,55 @@ bot.on("error", err => console.log(err));
 // Message Handler
 bot.on("message", data => {
   console.log(data);
-  if (data.subtype) {
-    // bot reply to itself >> shut down
+
+  // bot reply to itself: shut down
+  if (data.subtype == "bot_message") {
     return;
-  };
+  }
+
   if (data.type == "desktop_notification") {
     throwPickUpLine();
     return;
-  } else if (data.type !== "message") {
-    return;
-  } else {
-    console.log("Handling message...");
-    handleMessage(data.text);
-    console.log(data.text);
   }
+
+  if (data.type !== "message") {
+    return;
+  }
+
+  // data.type == "message"
+  console.log("Handling message...");
+  handleMessage(data.text);
 });
 
+const replyData = fs.readFileSync("content/pickuplines.json");
+const content = JSON.parse(replyData);
+
 function throwPickUpLine() {
-  bot.postMessageToChannel;
-  let replyData = fs.readFileSync("content/pickuplines.json");
-  let content = JSON.parse(replyData);
-
   // random reply
-  const no = Math.floor(Math.random() * content.length);
-  const question = content[no].question;
-  const reply = content[no].reply;
+  const randomNo = Math.floor(Math.random() * content.length);
+  const question = content[randomNo].question;
+  const reply = content[randomNo].reply;
 
-  // let params = { icon_emoji: ":smirk:" };
-
-  // if there's a question, wait for a user to type something before sending out the reply
   if (question) {
     bot.postMessageToChannel(channel, question, params);
-    if (bot.on("message")) {
-      bot.postMessageToChannel(channel, reply, params);
-    }
+    console.log(randomNo);
+    throwPickUpReply(randomNo);
     return;
   }
 
   // if it's only one sentence
   bot.postMessageToChannel(channel, reply, params);
 }
+
+
+function throwPickUpReply(num) {
+  // reply to the question asked earlier
+  const reply = content[num].reply;
+  let params = { icon_emoji: ":smirk:" };
+  bot.postMessageToChannel(channel, reply, params);
+}
+
+
 
 // Respons to Data
 function handleMessage(message) {
