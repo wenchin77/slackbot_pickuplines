@@ -85,12 +85,19 @@ function throwPickUpReply(num) {
 function handleMessage(message) {
   if (message.includes("ethan")) {
     hailMyEthan();
-  } else if (message.includes("inspire me")) {
+    return;
+  };
+  if (message.includes("inspire me")) {
     inspireMe();
-  } else if (message.includes("applepie")) {
+    return;
+  };
+  if (message.includes("applepie")) {
     throwPickUpLine();
-  } else if (message.includes("help")) {
+    return;
+  };
+  if (message.includes("help")) {
     runHelp();
+    return;
   }
 }
 
