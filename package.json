@@ -1,0 +1,17 @@
+{
+  "name": "slackbot_applepie",
+  "version": "1.0.0",
+  "description": "Slackbot that tells pickup lines",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Wenchin",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "dotenv": "^8.2.0",
+    "fs": "0.0.1-security",
+    "slackbots": "^1.1.0"
+  }
+}
