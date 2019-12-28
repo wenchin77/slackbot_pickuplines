@@ -9,7 +9,7 @@
   "author": "Wenchin",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.19.0",
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
     "slackbots": "^1.1.0"
