@@ -1,9 +1,11 @@
+// use npm slackbots
 const SlackBot = require("slackbots");
 const axios = require("axios");
 const fs = require("fs");
 const dotenv = require("dotenv");
 
 dotenv.config();
+
 
 const bot = new SlackBot({
   token: process.env.BOT_TOKEN,
@@ -28,6 +30,7 @@ bot.on("start", () => {
 // Error Handler
 bot.on("error", err => console.log(err));
 
+let qid;
 // Message Handler
 bot.on("message", data => {
   console.log(data);
@@ -37,7 +40,7 @@ bot.on("message", data => {
     return;
   }
 
-  if (data.type == "desktop_notification") {
+  if (data.type == "desktop_notification" && !qid) {
     throwPickUpLine();
     return;
   }
@@ -59,11 +62,10 @@ function throwPickUpLine() {
   const randomNo = Math.floor(Math.random() * content.length);
   const question = content[randomNo].question;
   const reply = content[randomNo].reply;
-
+  qid = randomNo;
   if (question) {
     bot.postMessageToChannel(channel, question, params);
     console.log(randomNo);
-    throwPickUpReply(randomNo);
     return;
   }
 
@@ -75,7 +77,7 @@ function throwPickUpLine() {
 function throwPickUpReply(num) {
   // reply to the question asked earlier
   const reply = content[num].reply;
-  let params = { icon_emoji: ":smirk:" };
+  // let params = { icon_emoji: ":smirk:" };
   bot.postMessageToChannel(channel, reply, params);
 }
 
@@ -83,6 +85,13 @@ function throwPickUpReply(num) {
 
 // Respons to Data
 function handleMessage(message) {
+
+  if(qid) {
+      throwPickUpReply(qid);
+      // show answer with qid
+      qid = null;
+  }
+
   if (message.includes("ethan")) {
     hailMyEthan();
     return;
