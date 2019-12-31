@@ -62,8 +62,8 @@ function throwPickUpLine() {
   const randomNo = Math.floor(Math.random() * content.length);
   const question = content[randomNo].question;
   const reply = content[randomNo].reply;
-  qid = randomNo;
   if (question) {
+    qid = randomNo;
     bot.postMessageToChannel(channel, question, params);
     console.log(randomNo);
     return;
@@ -100,10 +100,6 @@ function handleMessage(message) {
     inspireMe();
     return;
   };
-  if (message.includes("applepie")) {
-    throwPickUpLine();
-    return;
-  };
   if (message.includes("help")) {
     runHelp();
     return;
@@ -116,7 +112,6 @@ function hailMyEthan() {
   console.log(replyData);
   let replies = JSON.parse(replyData);
   console.log(replies);
-  // random reply
   const no = Math.floor(Math.random() * replies.length);
   const reply = replies[no].reply;
   console.log(reply);
