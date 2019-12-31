@@ -27,10 +27,14 @@ bot.on("start", () => {
   );
 });
 
+// Exit
+bot.on('close', () => {
+  bot.postMessageToChannel(chanenl, '走了掰掰', params)
+})
+
 // Error Handler
 bot.on("error", err => console.log(err));
 
-let qid;
 // Message Handler
 bot.on("message", data => {
   console.log(data);
@@ -56,6 +60,7 @@ bot.on("message", data => {
 
 const replyData = fs.readFileSync("content/pickuplines.json");
 const content = JSON.parse(replyData);
+let qid;
 
 function throwPickUpLine() {
   // random reply
@@ -85,10 +90,10 @@ function throwPickUpReply(num) {
 
 // Respons to Data
 function handleMessage(message) {
-
+  
+  // show answer with qid and clear qid for the next question to show
   if(qid) {
       throwPickUpReply(qid);
-      // show answer with qid
       qid = null;
   }
 
