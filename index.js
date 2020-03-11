@@ -11,7 +11,7 @@ const bot = new SlackBot({
   name: "applepie"
 });
 
-const channel = "applepie_test";
+const channel = "happy";
 
 const params = {
   icon_emoji: ":apple:"
@@ -103,13 +103,11 @@ function handleMessage(message) {
 
 async function showWikiContent(message) {
   let keyword = message.split(" ")[1];
-  console.log(message.split(" ").length);
   if (message.split(" ").length > 2) {
     for (let i = 2; i < message.split(" ").length; i++) {
       keyword += `_${message.split(" ")[i]}`;
     }
   }
-  console.log("keyword", keyword);
   try{
     const wikiLink = `https://en.m.wikipedia.org/wiki/${keyword}`
     const browser = await puppeteer.launch();
@@ -125,7 +123,6 @@ async function showWikiContent(message) {
       }
       return results;
     });
-    console.log(content);
     await browser.close();
     bot.postMessageToChannel(channel, `${content} See more at ${wikiLink}`, params);
   } catch(err) {
