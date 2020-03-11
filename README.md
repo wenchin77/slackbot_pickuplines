@@ -1,6 +1,6 @@
 # @applepie
 
-> Simple slackbot built with Node.js and Slackbots that tells random pickup lines and tech quotes.
+> Simple slackbot built with Node.js and Slackbots (npm) that tells random pickup lines, tech quotes and search stuff on Wikipedia for you
 
 ## APIs Used:
 [https://github.com/BolajiAyodeji/inspireNuggets](https://github.com/BolajiAyodeji/inspireNuggets)
@@ -23,7 +23,3 @@ npm start
 ### Author
 
 Wenchin Chuang
-
-### Version
-
-1.0.0
